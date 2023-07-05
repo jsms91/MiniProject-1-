@@ -29,52 +29,51 @@ public class User {
 	public void SignUp() {
 
 		try {
-			System.out.println("회원가입 : " + data.getUlist());
-	        System.out.println("=============== 회원가입 ===============");
-			System.out.println("123 : " + data.getUlist());
-	        
-	        int cno = uList.size() == 0 ? 1 : uList.get(uList.size() - 1).getuNo() + 1;
 
-	        System.out.print("> 아이디 : ");
+	        System.out.println("=============== 회원가입 ===============");
+	        
+	        int cno = uList.size() == 0 ? 1 : uList.get(uList.size() - 1).getuNo() + 1; //고객번호(기존에 회원정보가 없으면 1, 있으면 기존에 고객번호 +1)
+
+	        System.out.print("* 아이디 : ");
 	        String uid = br.readLine(); // 사용자로부터 아이디 입력 받기
 	        
 	        while (uMap.containsKey(uid)) { // 아이디 중복 체크
-	            System.out.println("\n*** 동일한 아이디가 존재합니다. 다시 입력하세요. ('stop' 입력시 나가기)***\n");
-	            System.out.print("> 아이디 : ");
+	            System.out.println("\n>>> 동일한 아이디가 존재합니다. 다시 입력하세요. ('stop' 입력시 나가기) <<<\n");
+	            System.out.print("* 아이디 : ");
 	            uid = br.readLine();
 	            if (uid.equals("stop")) {
 	                return;
 	            }
 	        }
 
-	        System.out.print("> 비밀번호 : ");
+	        System.out.print("* 비밀번호 : ");
 	        String upw = br.readLine(); // 사용자로부터 비밀번호 입력 받기
 
-	        System.out.print("> 이름 : ");
+	        System.out.print("* 이름 : ");
 	        String uname = br.readLine(); // 사용자로부터 이름 입력 받기
 
-	        int ucount = 0;
-	        String ugrade = "level0";
+	        int ucount = 0; //구매회수
+	        String ugrade = "level0"; //고객등급은 처음에 level0으로 시작
 
-	        System.out.print("회원유형[1.Admin||2.Member] : ");
+	        System.out.print("* 회원유형[1.Admin||2.Member] : ");
 	        int n = Integer.parseInt(br.readLine()); // 사용자로부터 회원 유형 입력 받기
 	        while (n != 1 && n != 2) { // 유효한 회원 유형인지 확인
-	            System.out.println("\n잘못 입력되었습니다. 다시 입력해주세요.");
-	            System.out.print("회원유형[1.Admin||2.Member] : ");
+	            System.out.println("\n>>> 잘못 입력되었습니다. 다시 입력해주세요. <<<");
+	            System.out.print("* 회원유형[1.Admin||2.Member] : ");
 	            n = Integer.parseInt(br.readLine());
 	        }
-	        String ucategory = n == 1 ? "Admin" : "Member";
+	        String ucategory = n == 1 ? "Admin" : "Member"; //회원분류(관리자 | 일반회원)
 
-			UserInfo userinfo = new UserInfo(cno, uid, upw, uname, ucount, ugrade, ucategory);
+			UserInfo userinfo = new UserInfo(cno, uid, upw, uname, ucount, ugrade, ucategory); //입력한 회원정보를 생성한 UserInfo객체 변수 userinfo에 할당
 
-			uList.add(userinfo);//처음에 파일에 저장된 값을 저장한 리스트에 추가로 저장
-			uMap.put(uid,userinfo); //추가로 저장된 값을 저장
+			uList.add(userinfo);//리스트에 회원정보 추가
+			uMap.put(uid,userinfo); //맵에 회원정보 추가
 
-			data.setUmap(uMap); //data에도 똑같이 업로드
-			data.setUlist(uList); //data에도 똑같이 업로드
+			data.setUmap(uMap); //data객체의 uMap 속성에 추가된 uMap으로 설정
+			data.setUlist(uList); //data객체의 uList 속성에 추가된 uList으로 설정
 
 	        String info = cno + "," + uid + "," + upw + "," + uname + "," + ucount + "," + ugrade + "," + ucategory;
-			System.out.println("회원가입 : " + info);
+			//System.out.println("회원가입 : " + info);
 			uinterface.Insert(info, fileName); // 파일에 회원 정보 저장
 
 		} catch(Exception e) {
@@ -92,16 +91,16 @@ public class User {
 		try {
 
 			while(true) {
-				System.out.print("> 아이디 : ");
+				System.out.print("* 아이디 : ");
 				uid = br.readLine();
-				System.out.print("\n\n> 비밀번호 : ");
+				System.out.print("\n* 비밀번호 : ");
 				upw = br.readLine();
 
 				userinterface = new UserMethod(data);
 				if(userinterface.Login(uid,upw)) {break;} //아이디 비민번호가 맞으면 true 반복문 종료
 			}
 
-			System.out.println("로그인 성공");
+			System.out.println(">>>로그인 성공<<<\n");
 			data.setLoginId(uid); //로그인한 회원의 아이디를 저장
 
 			if(uMap.get(uid).getuCategory().equals("Admin")) {

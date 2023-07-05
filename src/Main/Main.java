@@ -12,12 +12,17 @@ public class Main{
 		Interface uinterface = new Method();
 		UserInterface userinterface = new UserMethod(data);
 		ManagerInterface managerinterface = new ManagerMethod(data);
+		HomeInterface homeinterface = new HomeMethod(data);
 
-		data.setUserfilename(uinterface.File("UserInfo.txt"));//회원정보파일생성
+		data.setUserfilename(uinterface.File("UserInfo.txt"));//회원정보 파일생성
 		data.setProductfilename(uinterface.File("ManagerInfo.txt")); //관리자 파일생성(나중에 상품파일로 이름 변경)
+		data.setOrderfilename(uinterface.File("OrderInfo.txt")); //주문내역 파일생성
+		data.setOrderdetailfilename(uinterface.File("OrderDetail.txt")); //주문상세내역 파일생성
 
 		userinterface.UserInfoReader(data.getUserfilename());
 		managerinterface.ProductInfoReader(data.getProductfilename());
+		homeinterface.OrderInfoReader(data.getOrderfilename());
+		homeinterface.OrderDetailReader(data.getOrderdetailfilename());
 
 		return data;
 		//일단 여기까지는 파일생성, 파일이름.
@@ -33,37 +38,36 @@ public class Main{
 
 		Scanner sc = new Scanner(System.in);
 
-		while(true) {
+		System.out.println("\n=========================\n");
+		System.out.println("1. 회원 가입\n");
+		System.out.println("2. 로 그 인\n");
+		System.out.println("0. 나 가 기\n");
+		System.out.print("* 원하는 메뉴를 선택하세요. >>> ");
 
-			System.out.println("\n=========================\n");
-			System.out.println("1. 회원 가입\n");
-			System.out.println("2. 로 그 인\n");
-			System.out.println("0. 나 가 기\n");
-			System.out.print("원하는 메뉴를 선택하세요. >>> ");
+		int number = sc.nextInt();
 
-			int number = sc.nextInt();
+		switch (number) {
 
-			switch(number) {
+			case 1: //회원가입으로 이동
+				System.out.println("[회원가입]\n");
+				user.SignUp();
+				user.SignIn();
+				break;
 
-				case 1 : //회원가입으로 이동
-					System.out.println("\n회원가입을 선택\n");
-					user.SignUp();
-					break;
+			case 2: //로그인으로 이동
+				System.out.println("[로그인]");
+				user.SignIn();
+				break;
 
-				case 2 : //로그인으로 이동
-					System.out.println("로그인");
-					user.SignIn();
-					break;
+			case 0: // 프로그램 종료
+				System.out.println("[종 료]");
+				System.exit(0);
+				break;
 
-				case 0 : // 프로그램 종료
-					System.out.println("종 료");
-					System.exit(0);
-
-				default :
-					System.out.println("\n>>>>> 잘못 입력했습니다.");
-					break;
-			}
-
+			default:
+				System.out.println("[Error!!]");
+				System.exit(0);
+				break;
 		}
 
 	}

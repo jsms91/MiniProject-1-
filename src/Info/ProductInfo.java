@@ -3,7 +3,7 @@ package Info;
 public class ProductInfo implements Comparable<ProductInfo> {
     private int pNo; //상품번호
     private String pName; //상품명
-    private String pCategory; //카테고리
+    private String pCategory; //카테고리명
     private int pCategoryNumber; //카테고리 no
     private int pPrice; //가격
     private int pStack; //재고

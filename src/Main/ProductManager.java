@@ -36,39 +36,41 @@ public class ProductManager {
         while(true) {
 
             System.out.println("1.상품등록 || 2.상품검색 || 3.상품목록 || 4.상품수정 || 5.상품삭제 || 0.뒤로가기\n");
-            System.out.print("원하는 메뉴를 선택하세요. >>> ");
+            System.out.print("* 원하는 메뉴를 선택하세요. >>> ");
             int n = sc.nextInt();
 
             switch (n) {
                 case 1 :
-                    System.out.println("상품등록");
-                    ProductRegister();
+                    System.out.println("[상품등록]");
+                    MenuRegister();
                     break;
 
                 case 2 :
-                    System.out.println("상품검색");
-                    ProductSearch();
+                    System.out.println("[상품검색]");
+                    MenuSearch();
                     break;
 
                 case 3 :
-                    System.out.println("상품목록");
-                    ProductListView();
+                    System.out.println("[상품목록]");
+                    MenuListView();
                     break;
 
                 case 4 :
-                    System.out.println("상품수정");
-                    ProductModifyView();
+                    System.out.println("[상품수정]");
+                    MenuModifyView();
                     break;
 
                 case 5 :
-                    System.out.println("상품삭제");
+                    System.out.println("[상품삭제]");
                     ProductDeleteView();
                     break;
                 case 0:
+                    Manager manager = new Manager(data);
+                    manager.ManagerView();
                     return;
 
                 default:
-                    System.out.println("\n>>>>> 잘못 입력했습니다.");
+                    System.out.println("\n[Error!!]\n");
                     break;
 
             }
@@ -76,22 +78,22 @@ public class ProductManager {
     }
 
     //상품등록
-    public void ProductRegister() {
+    public void MenuRegister() {
         try {
         	
             System.out.println("\n=============== 상품 등록 ===============\n");
             
             int pno = pList.size()==0 ? 1 : (pList.get(pList.size()-1).getpNo()+1); //상품번호
 
-            System.out.print("> 상품명 : ");
+            System.out.print("* 상품명 : ");
             String pname = br.readLine();
             
             if(pMap.containsKey(pname)) {
-            	System.out.println("동일한 상품이 이미 등록되어 있습니다.\n\n");
+            	System.out.println(" >>> 동일한 상품이 이미 등록되어 있습니다. <<< \n");
             	return;
             }
 
-            System.out.print("> 종류[1. 커피 | 2. 에이드 | 3.디저트](1~3번만 입력하세요. 다른번호는 etc로 분류) : ");
+            System.out.print("* Category [1. Coffee | 2. Ade | 3.Dessert](1~3번만 입력하세요. 다른번호는 etc로 분류) : ");
             int n = sc.nextInt();
 
             String pcategory = "";
@@ -116,13 +118,13 @@ public class ProductManager {
                     break;
             }
 
-            System.out.print("> 가격 : ");
+            System.out.print("* 가격 : ");
             int price = Integer.parseInt(br.readLine());
 
-            System.out.print("> 재고 : " );
+            System.out.print("* 재고 : " );
             int pstack = Integer.parseInt(br.readLine());
 
-            System.out.print("> 상품설명 : ");
+            System.out.print("* 상품설명 : ");
             String pdescription = br.readLine();
 
             productinfo = new ProductInfo(pno,pname,pcategory,pcategorynumber,price,pstack,pdescription);
@@ -133,11 +135,10 @@ public class ProductManager {
             data.setPmap(pMap);
 
             String pinfo = pno + "," + pname + "," + pcategory  + "," + pcategorynumber + "," + price + "," +pstack + "," + pdescription;
-            System.out.println("상품등록 : " + pinfo);
+            //System.out.println("상품등록 : " + pinfo);
+            uinterface.Insert(pinfo, fileName); // 파일에 상품 정보 저장
 
-            uinterface.Insert(pinfo, fileName); // 파일에 회원 정보 저장
-
-            System.out.println("파일에 상품등록 완료.");
+            System.out.println("\n[상품등록 완료.]\n");
 
         } catch(Exception e ){
             e.printStackTrace();
@@ -145,24 +146,24 @@ public class ProductManager {
     }
 
     //상품검색
-    public void ProductSearch() {
+    public void MenuSearch() {
 
         try {
             System.out.println("\n=============== 상품 검색 ===============\n");
-            System.out.print("> 상품명 >>>");
+            System.out.print("* 상품명 : ");
             String pname = br.readLine();
 
-            System.out.println("맵사이즈 : " + pMap.size());
+            //System.out.println("맵사이즈 : " + pMap.size());
 
             while(!pMap.containsKey(pname)) {
-                System.out.println("찾으려고 하는 상품이 없습니다.\n");
-                System.out.print("> 상품명을 다시 입력하세요.('stop' 입력시 종료) >>> ");
+                System.out.println(">>> 찾으려고 하는 상품이 없습니다. <<<\n");
+                System.out.print("* 상품명을 다시 입력하세요.('stop' 입력시 종료) : ");
                 pname = br.readLine();
                 if(pname.equals("stop")) {return;}
             }
 
-            System.out.println(String.format("\n%-12s||%-12s||%-12s||%-12s||%-12s||%-50s",
-                    "상품번호","상품명","카테고리","가격","재고량","상품설명\n"));
+            System.out.printf("\n%-12s||%-12s||%-12s||%-12s||%-12s||%-50s%n",
+                    "상품번호","상품명","카테고리","가격","재고량","상품설명\n");
             managerinterface = new ManagerMethod(data);
             managerinterface.ProductList(pMap.get(pname));
 
@@ -173,13 +174,13 @@ public class ProductManager {
     }
 
     //상품 목록
-    public void ProductListView() {
+    public void MenuListView() {
 
         Collections.sort(pList); //상품을 카테고리 번호를 기준으로 오름차순 정렬
 
         System.out.println("\n=============== 상품 목록 ===============\n");
-        System.out.println(String.format("\n%-12s||%-12s||%-12s||%-12s||%-12s||%-50s",
-                "상품번호","상품명","카테고리","가격","재고량","상품설명\n"));
+        System.out.printf("%-12s||%-12s||%-12s||%-12s||%-12s||%-50s%n",
+                "상품번호","상품명","카테고리","가격","재고량","상품설명\n");
         managerinterface = new ManagerMethod(data);
 
         for(ProductInfo pi : pList) {
@@ -191,20 +192,20 @@ public class ProductManager {
 
     // TODO: 2023-06-30 상품수정
     //상품수정
-    public void ProductModifyView() {
+    public void MenuModifyView() {
 
         System.out.println("\n=============== 상품 수정 ===============\n");
 
         try {
             String pname = "";
             while(true) {
-                System.out.print("수정할 상품명을 입력하세요 >>> ");
+                System.out.print("* 수정_상품명 : ");
                 pname = br.readLine();
                 if(pMap.containsKey(pname)) {
                     break;
                 }
                 else {
-                    System.out.println("존재하지 않는 상품입니다. 다시 입력해주세요.\n");
+                    System.out.println(">>> 존재하지 않는 상품입니다. 다시 입력해주세요. <<<\n");
                 }
             }
 
@@ -215,7 +216,7 @@ public class ProductManager {
 
             int pno = pMap.get(pname).getpNo();
 
-            System.out.print("카테고리 [1.커피 | 2.에이드 | 3.디저트](1~3번만 입력하세요. 다른번호는 etc로 분류)  >>");
+            System.out.print("* Category [1.coffee | 2.ade | 3.dessert](1~3번만 입력하세요. 다른번호는 etc로 분류)  >>");
 
             int n = sc.nextInt();
 
@@ -241,13 +242,13 @@ public class ProductManager {
                     break;
             }
 
-            System.out.print("> 수정 후 가격 : ");
+            System.out.print("* 수정_가격 : ");
             int price = Integer.parseInt(br.readLine());
 
-            System.out.print("> 수정 후 재고 : " );
+            System.out.print("* 수정_재고 : " );
             int pstack = Integer.parseInt(br.readLine());
 
-            System.out.print("> 수정 후 상품설명 : ");
+            System.out.print("* 수정_상품설명 : ");
             String pdescription = br.readLine();
 
             managerinterface.ProductModifyDelete(new ProductInfo(pno,pname,pcategory,pcategorynumber,price,pstack,pdescription),"M");
@@ -264,16 +265,16 @@ public class ProductManager {
 
         try {
             while(true) {
-                System.out.print("삭제할 상품명을 입력하세요. >>>");
+                System.out.print("* 삭제할 상품명을 입력하세요. >>> ");
                 String pname = br.readLine();
                 if(!pMap.containsKey(pname)) {
-                    System.out.println("입력한 상품은 없습니다. 다시 입력하세요.\n");
+                    System.out.println(">>> 입력한 상품은 없습니다. 다시 입력하세요. <<<\n");
                 }
                 else {
                     //삭제 실행
                     managerinterface = new ManagerMethod(data);
                     managerinterface.ProductModifyDelete(pMap.get(pname),"D");
-                    System.out.println("삭제 성공");
+                    System.out.println("\n[삭제 성공]\n");
                     break;
                 }
             }

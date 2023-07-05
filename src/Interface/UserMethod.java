@@ -7,11 +7,11 @@ import Info.*;
 
 public class UserMethod implements UserInterface {
 	
-	Data data = new Data();
+	Data data = new Data(); //Data객체 생성
 	UserInfo userinfo = new UserInfo();
 
-	private List<UserInfo> uList;// = new ArrayList<>();
-	private HashMap<String,UserInfo> uMap;// = new HashMap<String, UserInfo>();
+	private final List<UserInfo> uList;// = new ArrayList<>();
+	private final HashMap<String,UserInfo> uMap;// = new HashMap<String, UserInfo>();
 	
 	public UserMethod(Data data) {
 		this.data = data;
@@ -51,7 +51,7 @@ public class UserMethod implements UserInterface {
 			e.printStackTrace();
 		}
 
-		System.out.println("파일이름 : " + data.getUserfilename());
+		System.out.println("\n>>> 파일이름 : " + data.getUserfilename() + "<<<\n");
 
 		data.setUlist(uList); //파일에서 담아온 모든정보를 저장한 리스트를 저장
 		data.setUmap(uMap); //파일에서 담아온 모든정보를 저장한 맵을 저장
@@ -63,8 +63,6 @@ public class UserMethod implements UserInterface {
 		uList.add(userinfo);
 		uMap.put(uid, userinfo);
 	}
-
-	//////////////////////////////이위에까지 Ok
 
 	//회원정보 리스트
 	@Override
@@ -78,8 +76,8 @@ public class UserMethod implements UserInterface {
 			String ugrade = u.getuGrade();
 			String ucategory = u.getuCategory();
 
-			System.out.println(String.format("%-12d || %-12s || %-12s || %-12s || %-12d || %-12s || %-12s\n",
-					uno,uid,upw,uname,ucount,ugrade,ucategory));
+			System.out.printf("%-12d || %-12s || %-12s || %-12s || %-12d || %-12s || %-12s\n\n",
+					uno,uid,upw,uname,ucount,ugrade,ucategory);
 
 	}
 
@@ -88,37 +86,19 @@ public class UserMethod implements UserInterface {
 	public boolean Login(String uid, String upw) {
 
 		if(!uMap.containsKey(uid)) {
-			System.out.println("\n***아이디가 존재하지 않습니다. 다시 입력해주세요. ***\n");
+			System.out.println("\n >>> 아이디가 존재하지 않습니다. 다시 입력해주세요. <<< \n");
 			return false;
 		}
 		else {
 			if(!uMap.get(uid).getuPw().equals(upw)) {
-				System.out.println("\n***비밀번호가 틀렸습니다. 다시 입력해주세요. ***");
+				System.out.println("\n >>> 비밀번호가 틀렸습니다. 다시 입력해주세요. <<< ");
 				return false;
 			}
 			else {
-				return true;
+				return true; //로그인 성공시 true를 반환
 			}
 		}
 
 	}
-	
-/*
-	//회원검색(일단은 아이디가 있다는 가정)
-	@Override
-	public UserInfo Search(String uid) {
-		System.out.println("uList : " + uList.size());
-		for(UserInfo s : uList) {
-			System.out.println("이름 : " + s.getuId());
-		}
-			return uMap.get(uid);
-	}
 
-	//회원정보 리스트
-	@Override
-	public List<UserInfo> UserInfoList() {
-		System.out.println("uList크기 : " + uList.size());
-		return uList;
-	}
-*/
 }

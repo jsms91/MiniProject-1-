@@ -9,7 +9,7 @@ public class ManagerMethod implements  ManagerInterface {
     Data data = new Data();
     ProductInfo productinfo = new ProductInfo();
     private List<ProductInfo> pList = new ArrayList<>();
-    private HashMap<String,ProductInfo> pMap;// = new HashMap<String, ProductInfo>();
+    private final HashMap<String,ProductInfo> pMap;// = new HashMap<String, ProductInfo>();
     
     public ManagerMethod(Data data) {
         this.data = data;
@@ -17,7 +17,7 @@ public class ManagerMethod implements  ManagerInterface {
         this.pList = data.getPlist();
     }
 
-    @Override
+    @Override //1. 파일에서 상품정보 읽어와서 list, map에 저장
     public void ProductInfoReader(String fileName) {
         //파일에 저장된 값을 가져오기
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -50,18 +50,16 @@ public class ManagerMethod implements  ManagerInterface {
 
         data.setPlist(pList); //파일에서 담아온 모든정보를 저장한 리스트를 저장
         data.setPmap(pMap); //파일에서 담아온 모든정보를 저장한 맵을 저장
-        System.out.println("mmmmmmmmmmmmmmm :" + data.getPmap().size());
 
     }
 
-    @Override
+    @Override //2.파일에서 읽어오는 정보들 한줄마다 추가
     public void Add(ProductInfo productinfo, String pname) {
         pList.add(productinfo);
         pMap.put(pname, productinfo);
     }
 
-    //상품리스트
-    @Override
+    @Override//3.상품리스트
     public void ProductList(ProductInfo productinfo) {
 
         int pno = productinfo.getpNo(); //상품번호
@@ -71,17 +69,13 @@ public class ManagerMethod implements  ManagerInterface {
         int pstack = productinfo.getpStack(); //재고
         String pdescription = productinfo.getpDescription();   //설명
 
-        System.out.println(String.format("%-12d || %-12s || %-12s || %-12d || %-12d || %-50s\n",
-                pno,pname,pcategory,pprice,pstack,pdescription));
+        System.out.printf("%-12d || %-12s || %-12s || %-12d || %-12d || %-50s\n%n",
+                pno,pname,pcategory,pprice,pstack,pdescription);
 
     }
 
-    //상품수정
-    @Override
+    @Override //4. 상품수정 및 삭제
     public void ProductModifyDelete(ProductInfo productinfo, String check) {
-
-        System.out.println("plist 크기 : " + pList.size() );
-        System.out.println("pMap 크기 : " + pMap.size());
 
         String pname = productinfo.getpName();
 
@@ -108,7 +102,7 @@ public class ManagerMethod implements  ManagerInterface {
 
         Interface ifc = new Method();
 
-        ifc.Modify(pList,data.getProductfilename());
+        ifc.MenuUpload(pList,data.getProductfilename()); //List, Map에 최종적으로 수정한 정보 업로드후 파일에도 업로드
 
         System.out.println("수정&삭제한 상품 파일에 새로 업로드");
 

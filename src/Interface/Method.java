@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Method implements Interface {
 
-	@Override//파일생성(파일이름으로 해당 파일생성 - 회원정보, 상품정보, 주문내역..)
+	@Override//1. 파일생성(파일이름으로 해당 파일생성 - 회원정보, 상품정보, 주문내역..)
 	public String File(String fileName) {
 		
 		File dir = new File("C:\\Data"); // 디렉터리 경로
@@ -40,13 +40,13 @@ public class Method implements Interface {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-		
+
 	    return file.getPath();
 
 	}
 
-	//회원가입, 상품등록
-	@Override //해당 파일의 정보를 저장(회원파일-회원정보, 상품파일-상품정보...)
+	//2. 회원가입, 상품등록, 주문(주문내역, 상세내역 각 각 업로드)
+	@Override //해당 파일의 정보를 저장(회원파일-회원정보, 상품파일-상품정보, 주문내역파일-주문내역, 주문상세파일-주문상세내역)
 	public void Insert(String Info, String fileName) {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {	 
@@ -65,8 +65,8 @@ public class Method implements Interface {
 		
 	}
 
-	@Override
-	public void Modify(List<ProductInfo> plist, String fileName) {
+	@Override //3-2 상품수정 후 파일에 업로드
+	public void MenuUpload(List<ProductInfo> plist, String fileName) {
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 
