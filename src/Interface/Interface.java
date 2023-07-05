@@ -1,6 +1,7 @@
 package Interface;
 
 import Info.ProductInfo;
+import Info.UserInfo;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ public interface Interface {
     public void Insert(String Info, String fileName);
 
     //3-1 회원정보수정
+    public void UserUpload(List<UserInfo> ulist, String fileName);
 
 	//3-2.파일수정(회원정보.상품정보) 파일에 재업로드
     public void MenuUpload(List<ProductInfo> plist, String fileName);

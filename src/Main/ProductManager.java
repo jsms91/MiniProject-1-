@@ -93,7 +93,7 @@ public class ProductManager {
             	return;
             }
 
-            System.out.print("* Category [1. Coffee | 2. Ade | 3.Dessert](1~3번만 입력하세요. 다른번호는 etc로 분류) : ");
+            System.out.print("* Category [1. coffee | 2. ade | 3.dessert](1~3번만 입력하세요. 다른번호는 etc로 분류) : ");
             int n = sc.nextInt();
 
             String pcategory = "";
@@ -188,9 +188,7 @@ public class ProductManager {
         }
         System.out.println("\n\n");
     }
-    //상품목록
 
-    // TODO: 2023-06-30 상품수정
     //상품수정
     public void MenuModifyView() {
 

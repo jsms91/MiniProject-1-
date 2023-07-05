@@ -1,6 +1,7 @@
 package Interface;
 
 import Info.ProductInfo;
+import Info.UserInfo;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,6 +64,38 @@ public class Method implements Interface {
 			e.printStackTrace();		    
 		}
 		
+	}
+
+	// TODO: 2023-07-05 수정해야됨(일단 다 코드만들었는데 실행확인)
+	@Override //3-1 회원정보 수정 후 파일에 업로드
+	public void UserUpload(List<UserInfo> ulist, String fileName) {
+
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+
+			for(UserInfo u : ulist) {
+
+				int uNo = u.getuNo(); //고객번호
+				String uId = u.getuId(); //아이디
+				String uPw = u.getuPw(); //비밀번호
+				String uName = u.getuName(); //이름
+				int uCount = u.getuCount(); //구매회수
+				String uGrade = u.getuGrade(); //회원등급
+				String uCategory = u.getuCategory();//회원분류
+
+				String info = uNo + "," + uId + "," + uPw + "," + uName + "," + uCount + "," + uGrade + "," + uCategory;
+
+				// 입력받은 고객정보를 파일에 쓰기
+				writer.write(info);
+				writer.newLine(); // 새로운 줄로 이동
+			}
+
+			System.out.println("\n"+fileName+" 파일에 저장되었습니다.\n");
+
+		} catch (IOException e) {
+			System.out.println("파일에 고객정보를 저장하는 중에 오류가 발생했습니다.");
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override //3-2 상품수정 후 파일에 업로드

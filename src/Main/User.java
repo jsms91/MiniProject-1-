@@ -32,7 +32,7 @@ public class User {
 
 	        System.out.println("=============== 회원가입 ===============");
 	        
-	        int cno = uList.size() == 0 ? 1 : uList.get(uList.size() - 1).getuNo() + 1; //고객번호(기존에 회원정보가 없으면 1, 있으면 기존에 고객번호 +1)
+	        int uno = uList.size() == 0 ? 1 : uList.get(uList.size() - 1).getuNo() + 1; //고객번호(기존에 회원정보가 없으면 1, 있으면 기존에 고객번호 +1)
 
 	        System.out.print("* 아이디 : ");
 	        String uid = br.readLine(); // 사용자로부터 아이디 입력 받기
@@ -53,7 +53,7 @@ public class User {
 	        String uname = br.readLine(); // 사용자로부터 이름 입력 받기
 
 	        int ucount = 0; //구매회수
-	        String ugrade = "level0"; //고객등급은 처음에 level0으로 시작
+	        String ugrade = "level_0"; //고객등급은 처음에 level0으로 시작
 
 	        System.out.print("* 회원유형[1.Admin||2.Member] : ");
 	        int n = Integer.parseInt(br.readLine()); // 사용자로부터 회원 유형 입력 받기
@@ -64,7 +64,7 @@ public class User {
 	        }
 	        String ucategory = n == 1 ? "Admin" : "Member"; //회원분류(관리자 | 일반회원)
 
-			UserInfo userinfo = new UserInfo(cno, uid, upw, uname, ucount, ugrade, ucategory); //입력한 회원정보를 생성한 UserInfo객체 변수 userinfo에 할당
+			UserInfo userinfo = new UserInfo(uno, uid, upw, uname, ucount, ugrade, ucategory); //입력한 회원정보를 생성한 UserInfo객체 변수 userinfo에 할당
 
 			uList.add(userinfo);//리스트에 회원정보 추가
 			uMap.put(uid,userinfo); //맵에 회원정보 추가
@@ -72,7 +72,7 @@ public class User {
 			data.setUmap(uMap); //data객체의 uMap 속성에 추가된 uMap으로 설정
 			data.setUlist(uList); //data객체의 uList 속성에 추가된 uList으로 설정
 
-	        String info = cno + "," + uid + "," + upw + "," + uname + "," + ucount + "," + ugrade + "," + ucategory;
+	        String info = uno + "," + uid + "," + upw + "," + uname + "," + ucount + "," + ugrade + "," + ucategory;
 			//System.out.println("회원가입 : " + info);
 			uinterface.Insert(info, fileName); // 파일에 회원 정보 저장
 

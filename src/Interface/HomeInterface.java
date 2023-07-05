@@ -18,6 +18,13 @@ public interface HomeInterface {
     //1-3 상품 담기
     public void BasketAdd(BasketInfo basketInfo, int check);
 
-    //3. 주문(장바구니)
+    //3~4 주문(장바구니)
     public void Order(int ono);
+
+    //5. 회원정보(주문내역 & 상세내역)
+    public void OrderList();
+
+    //5-1 회원정보 수정
+
+    //5-2 회원탈퇴
 }

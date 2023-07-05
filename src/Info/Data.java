@@ -18,7 +18,7 @@ public class Data {
     public HashMap<String,ProductInfo> pmap = new HashMap<String,ProductInfo>();//상품정보맵
     public HashMap<String,BasketInfo> bmap = new HashMap<String, BasketInfo>();//장바구니맵
     public HashMap<Integer,OrderInfo> omap = new HashMap<Integer,OrderInfo>(); //주문내역맵
-    public HashMap<String,OrderDetail> odmap = new HashMap<String,OrderDetail>(); //주문상세내역맵
+    public HashMap<String,HashSet<Integer>> odmap = new HashMap<String,HashSet<Integer>>(); //주문상세내역맵
 
     public String LoginId; //로그인 중인 아이디
 
@@ -29,7 +29,7 @@ public class Data {
     public Data(String userfilename, String productfilename, String orderfilename, String orderdetailfilename,
                 List<UserInfo> ulist, List<ProductInfo> plist, List<BasketInfo> blist, List<OrderInfo> olist,
                 List<OrderDetail> odlist, HashMap<String, UserInfo> umap, HashMap<String, ProductInfo> pmap,
-                HashMap<String, BasketInfo> bmap, HashMap<Integer, OrderInfo> omap, HashMap<String, OrderDetail> odmap,
+                HashMap<String, BasketInfo> bmap, HashMap<Integer, OrderInfo> omap, HashMap<String, HashSet<Integer>> odmap,
                 String loginId) {
         this.userfilename = userfilename;
         this.productfilename = productfilename;
@@ -152,11 +152,11 @@ public class Data {
         this.omap = omap;
     }
 
-    public HashMap<String, OrderDetail> getOdmap() {
+    public HashMap<String, HashSet<Integer>> getOdmap() {
         return odmap;
     }
 
-    public void setOdmap(HashMap<String, OrderDetail> odmap) {
+    public void setOdmap(HashMap<String, HashSet<Integer>> odmap) {
         this.odmap = odmap;
     }
 

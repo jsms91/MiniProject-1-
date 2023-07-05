@@ -28,7 +28,7 @@ public class HomeMethod implements HomeInterface {
     private HashMap<String, ProductInfo> pMap;
     private HashMap<String, BasketInfo> bMap;
     private HashMap<Integer, OrderInfo> oMap;
-    private HashMap<String, OrderDetail> odMap;
+    private HashMap<String, HashSet<Integer>> odMap;
 
 
 
@@ -107,9 +107,17 @@ public class HomeMethod implements HomeInterface {
 
                 // UserInfo 객체를 생성하고 고객 정보 값들을 사용하여 초기화
                 OrderDetail od = new OrderDetail(odNo, odName, odPrice, odAmount, oNo,odId);
+                HashSet<Integer> set = new HashSet<Integer>();
+                if(odMap.containsKey(odId)) { //같은아이디 주문번호를 담기
+                    set = odMap.get(od.getOdId());
+                    set.add(oNo); //같은 아이디에 주문번호 중복저장x
+                }
+                else {
+                    set.add(oNo);
+                }
 
                 odList.add(od);
-                odMap.put(odId,od);
+                odMap.put(odId,set);
 
             }
 
@@ -225,13 +233,19 @@ public class HomeMethod implements HomeInterface {
 
         //장바구니에서 상세내역먼저 저장
         for(BasketInfo bi : bList) {
-            int odNo = odList.size() == 0 ? 1 : odList.get(odList.size()-1).getOdNo()+1;
+            int odNo = odList.size() == 0 ? 1 : (odList.get(odList.size()-1).getOdNo())+1;
             String odName = bi.getbName();
             int odPrice = bi.getbPrice();
             int odAmount = bi.getaMount();
             int oNo = ono;
 
             oPrice += odPrice; //총 주문금액
+
+            OrderDetail od = new OrderDetail(odNo,odName,odPrice,odAmount,oNo,odId);
+            odList.add(od); //주문상세내역에 더하기
+            HashSet<Integer> set = odMap.get(odId); //한아이디가 주문한 주문번호만 입력(set으로 중목저장x)
+            set.add(oNo);
+            odMap.put(odId,set);
 
             //재고조정
             int index = pList.indexOf(pMap.get(odName)); //해당상품의 객체정보가 저장된 index번호
@@ -256,11 +270,34 @@ public class HomeMethod implements HomeInterface {
         String info = String.format("%d,%s,%s,%d,%s",oNo,odId,oTitle,oPrice,oDay);
         inter.Insert(info,data.getOrderfilename()); //주문내역 파일에 저장
 
+
+
+        //구매회수 1증가 회원정보 변경
+        int index = uList.indexOf(uMap.get(odId));
+        UserInfo ui = uList.get(index);
+        ui.setuCount(ui.getuCount() + 1);
+
+        if(ui.getuCount()>3) { //5회이상 주문시
+            ui.setuGrade("level_2");
+        }
+        //리스트,맵 업로드
+        uList.set(index,ui);
+        uMap.put(odId,ui);
+        inter.UserUpload(uList,data.getUserfilename());//파일에 수정된 회원정보 새로 업로드
+
         System.out.println("주문완료.");
         System.out.println("장바구니 크기 : " + bList.size() + " ,, " + bMap.size());
         bMap.clear();
         bList.clear();
         System.out.println("초기화한 장바구니 크기" + bList.size() + " ,, " + bMap.size());
+
+    }
+
+    @Override //5. 회원정보(주문내역&상세내역)
+    public void OrderList() {
+        System.out.println("\n=============== 주문 내역 ===============\n");
+
+
 
     }
 }
