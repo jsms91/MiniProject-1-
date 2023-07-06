@@ -8,8 +8,15 @@ public class Main{
 
 	public static Data Setup () {
 
+//		Data data = new Data();
+//		Interface uinterface = new Method();
+//		Data data = new Data();
 		Data data = new Data();
 		Interface uinterface = new Method();
+
+//		Interface uinterface = new Method();
+//		Data data = new Data();
+//		Interface uinterface = new Method();
 		UserInterface userinterface = new UserMethod(data);
 		ManagerInterface managerinterface = new ManagerMethod(data);
 		HomeInterface homeinterface = new HomeMethod(data);
