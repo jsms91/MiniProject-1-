@@ -47,7 +47,7 @@ public class Main{
 		System.out.print("* 원하는 메뉴를 선택하세요. >>> ");
 
 		int number = sc.nextInt();
-
+		//프로젝트 시작
 		switch (number) {
 
 			case 1: //회원가입으로 이동
