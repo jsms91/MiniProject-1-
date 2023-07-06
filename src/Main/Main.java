@@ -38,6 +38,8 @@ public class Main{
 
 		Scanner sc = new Scanner(System.in);
 
+		System.out.println("로그인아이디 체크 : " + data.LoginId);
+
 		System.out.println("\n=========================\n");
 		System.out.println("1. 회원 가입\n");
 		System.out.println("2. 로 그 인\n");

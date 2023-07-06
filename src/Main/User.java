@@ -10,6 +10,7 @@ public class User {
 	private Data data;
 	private List<UserInfo> uList;// = data.getUlist(); //회원정보 List
 	private HashMap<String,UserInfo> uMap;// = data.getUmap(); //회원정보 Map
+	private HashMap<String, HashSet<Integer>> odMap; //주문상세내역(아이디중복체크에 필요)
 	private String fileName;// = data.getUserfilename(); //회원정보 파일이름
 	private String LoginId;// = data.getLoginId(); //로그인중인 아이디
 	
@@ -23,6 +24,7 @@ public class User {
 		this.uMap = data.getUmap();
 		this.fileName = data.getUserfilename();
 		this.LoginId = data.getLoginId();
+		this.odMap = data.getOdmap();
 	}
 
 	//회원가입
@@ -37,7 +39,7 @@ public class User {
 	        System.out.print("* 아이디 : ");
 	        String uid = br.readLine(); // 사용자로부터 아이디 입력 받기
 	        
-	        while (uMap.containsKey(uid)) { // 아이디 중복 체크
+	        while (uMap.containsKey(uid) || odMap.containsKey(uid) ) { // 아이디 중복 체크(기존에 주문내역에 있는 아이디이면 가입x)
 	            System.out.println("\n>>> 동일한 아이디가 존재합니다. 다시 입력하세요. ('stop' 입력시 나가기) <<<\n");
 	            System.out.print("* 아이디 : ");
 	            uid = br.readLine();

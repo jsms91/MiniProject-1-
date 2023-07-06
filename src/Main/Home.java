@@ -1,11 +1,11 @@
 package Main;
 
 import Info.*;
-import Interface.HomeInterface;
-import Interface.HomeMethod;
+import Interface.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.sql.SQLOutput;
 import java.util.*;
 
 
@@ -59,7 +59,7 @@ public class Home {
 
 
 		System.out.println("\n=============== CAFE ===============\n");
-		System.out.println("1.상품목록 || 2.상품검색 || 3.장바구니 || 4.주문 || 5.회원정보 || 6.로그아웃");
+		System.out.println("1.상품목록 || 2.장바구니 || 3.주문 || 4.회원정보 || 5.로그아웃");
 		System.out.print("* 원하는 메뉴를 선택하세요. >>> ");
 		int n = sc.nextInt();
 
@@ -69,22 +69,18 @@ public class Home {
 				HomeMenuListView(); //1은 처음에 상품목록에 전체상품을 보여주고 이후 2는 커피 3은 에이디 이런식..
 				break;
 			case 2 :
-				System.out.println("상품검색");
-				HomeMenuSearch();
-				break;
-			case 3 :
 				System.out.println("장바구니");
 				BasketList();
 				break;
-			case 4 :
+			case 3 :
 				System.out.println("주문");
 				BasketList(); //장바구니로 이동해서 주문
 				break;
-			case 5 :
+			case 4 :
 				System.out.println("회원정보");
-				myInfoList();
+				MyInfoList();
 				break;
-			case 6 :
+			case 5 :
 				System.out.println("로그아웃");
 				LoginId = "";
 				data.setLoginId(LoginId);
@@ -151,12 +147,7 @@ public class Home {
 
 	}
 
-	//2.상품검색
-	public void HomeMenuSearch() {
-
-	}
-
-	//3.장바구니
+	//2.장바구니
 	public void BasketList() {
 		System.out.println("\n=============== 장바구니 ===============\n");
 		System.out.println("\n     상품명     ||     수량     ||     가격      \n");
@@ -216,8 +207,11 @@ public class Home {
 	}
 
 	// TODO: 2023-07-05 회원정보수정(아직 미완성)
-	//1.회원정보 -> 회원정보[1.수정 | 2.탈퇴(탈퇴후 파일에서 삭제 -> 초기화면으로이동)
-	public void myInfoList() {
+	//4.회원정보 -> 회원정보[1.수정 | 2.탈퇴(탈퇴후 파일에서 삭제 -> 초기화면으로이동)
+	public void MyInfoList() {
+
+		System.out.println("로그인 아이디 ; " + LoginId);
+
 		int uNo = uMap.get(LoginId).getuNo();
 		String uName = uMap.get(LoginId).getuName();
 		int uCount = uMap.get(LoginId).getuCount();
@@ -226,22 +220,118 @@ public class Home {
 
 		System.out.println("\n=============== 회원정보 ===============\n");
 		System.out.println("회원번호 | 회원이름 | 구매횟수 | 회원등급 | 회원분류");
-		System.out.println(String.format("%d %s %d %s %s\n\n",uNo,uName,uCount,uGrade,uCategroy));
+		System.out.println(String.format("%-8d %-10s %-7d %-10s %-10s\n",uNo,uName,uCount,uGrade,uCategroy));
 
-		System.out.println("\n=============== 주문내역 ===============\n");
-		System.out.println(String.format("%-7d | %-15s | %-10d | %-20s","주문번호","상품명","결제금액","주문일"));
-		for(int ono : odMap.get(LoginId)) {
-			String oTitle = oMap.get(ono).getoTitle();
-			int oPrice = oMap.get(ono).getoPrice();
-			String oDay = oMap.get(ono).getoDay();
-			System.out.println(String.format("%-7d | %-15s | %-10d | %-20s", ono,oTitle,oPrice,oDay));
+		OrderListView(); //주문내역
+	}
+
+	//4-1 주문내역
+	public void OrderListView() {
+
+		System.out.println("=============== 주문내역 ===============\n");
+
+		if(!odMap.containsKey(LoginId)) {
+			System.out.println(">>>>>>> 주문내역이 없습니다. <<<<<<<");
+			System.out.println("\n[2.회원정보수정 | 3.탈퇴 | 0. 뒤로가기");
+			System.out.print("* 원하는 메뉴를 선택하세요.[번호로 입력] >>> ");
+		}
+		else {
+			System.out.println(String.format("%-8s | %-15s | %-7s | %s ", "주문번호", "상품명", "결제금액", "주문일"));
+			for (int ono : odMap.get(LoginId)) {
+				String oTitle = oMap.get(ono).getoTitle();
+				int oPrice = oMap.get(ono).getoPrice();
+				String oDay = oMap.get(ono).getoDay();
+				System.out.println(String.format("%-10d | %-15s | %-10d | %s", ono, oTitle, oPrice, oDay));
+			}
+
+			System.out.println("\n[1.주문상세내역 | 2.회원정보수정 | 3.탈퇴 | 0. 뒤로가기");
+			System.out.print("* 원하는 메뉴를 선택하세요.[번호로 입력] >>> ");
+
 		}
 
-		System.out.println("[1.주문상세내역 | 2.회원정보수정 | 3.탈퇴");
-		System.out.print("* 원하는 메뉴를 선택하세요.[번호로 입력] >>> ");
-		//int menu = sc.nextInt();
-		// TODO: 2023-07-05 회원정보 수정, 탈뢰하기
+		int menu = sc.nextInt();
 
+		switch (menu) {
+			case 1:
+				System.out.println("주문상세내역");
+				OrderDetailView();
+				break;
+			case 2: //회원정보수정
+				UserModify();
+				break;
+			case 3: //회원정보탈퇴(삭제)
+				homeinterface.UserModifyDelete(uMap.get(LoginId), "D");
+				LoginId = "";
+				data.setLoginId(LoginId);
+				Main.main(new String[]{}); //메인페이지 이동
+				break;
+			case 0 : //뒤로가기
+				HomeView();
+				break;
+			default:
+				System.out.println("[Error!!]");
+				HomeView();
+				break;
+		}
+	}
+	// TODO: 2023-07-06 주문상세내역
+	//4-3 주문상세내역
+	public void OrderDetailView() {
+
+		System.out.println(String.format("%-10s | %-15s | %-7s | %-7s | %s ", "주문상세번호", "상품명", "상품가격", "상품개수","주문번호"));
+		for(OrderDetail od : odList) {
+			if(od.getOdId().equals(LoginId)) {
+				int odNo = od.getOdNo();
+				String odName = od.getOdName();
+				int odPrice = od.getOdPrice();
+				int odAmount = od.getOdAmount();
+				int oNo = od.getoNo();
+				System.out.println(String.format("%-10d | %-15s | %-10d | %-7d | %d", odNo, odName, odPrice, odAmount,oNo));
+			}
+		}
+
+		System.out.print("[0. 뒤로가기] >>>");
+		int n = sc.nextInt(); //형식상 입력만 받기
+		MyInfoList(); //어떤값을 입력받아도 회원정보로 이동
+
+	}
+
+
+	//4-3 회원정보_수정(비밀번호, 이름만 변경가능)
+	public void UserModify() {
+
+		System.out.println("\n=============== 회원정보 수정 ===============\n");
+
+		try {
+
+			System.out.print("* 비밀번호 : " );
+			String uPw = br.readLine();
+			while(!uPw.equals(uMap.get(LoginId).getuPw())) {
+				System.out.println("비밀번호를 다시입력해주세요.");
+				System.out.print("* 비밀번호 : " );
+				uPw = br.readLine();
+			}
+
+			System.out.println(String.format("* 아이디 : %s ", LoginId));
+			System.out.print("* 비밀번호 : ");
+			uPw = br.readLine();
+			System.out.print(String.format("* 회원명[%s] :  ", uMap.get(LoginId).getuName()));
+			String uName = br.readLine();
+
+			int uNo = uMap.get(LoginId).getuNo();
+			int uCount = uMap.get(LoginId).getuCount();
+			String uGrade = uMap.get(LoginId).getuGrade();
+			String uCategory = uMap.get(LoginId).getuCategory();
+
+			UserInfo userInfo = new UserInfo(uNo,LoginId,uPw,uName,uCount,uGrade,uCategory);
+
+			homeinterface = new HomeMethod(data);
+			homeinterface.UserModifyDelete(userInfo,"M");//수정은 M,삭제는 D
+			HomeView();
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

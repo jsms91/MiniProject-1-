@@ -249,7 +249,7 @@ public class ProductManager {
             System.out.print("* 수정_상품설명 : ");
             String pdescription = br.readLine();
 
-            managerinterface.ProductModifyDelete(new ProductInfo(pno,pname,pcategory,pcategorynumber,price,pstack,pdescription),"M");
+            managerinterface.MenuModifyDelete(new ProductInfo(pno,pname,pcategory,pcategorynumber,price,pstack,pdescription),"M");
 
         }catch(Exception e) {
             e.printStackTrace();
@@ -271,7 +271,7 @@ public class ProductManager {
                 else {
                     //삭제 실행
                     managerinterface = new ManagerMethod(data);
-                    managerinterface.ProductModifyDelete(pMap.get(pname),"D");
+                    managerinterface.MenuModifyDelete(pMap.get(pname),"D");
                     System.out.println("\n[삭제 성공]\n");
                     break;
                 }

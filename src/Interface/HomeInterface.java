@@ -25,6 +25,6 @@ public interface HomeInterface {
     public void OrderList();
 
     //5-1 회원정보 수정
+    public void UserModifyDelete(UserInfo userInfo, String check); //수정한 회원정보와 check(수정,삭제 선택)
 
-    //5-2 회원탈퇴
 }

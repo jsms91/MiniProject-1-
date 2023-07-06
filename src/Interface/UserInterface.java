@@ -16,12 +16,4 @@ public interface UserInterface {
 	//로그인
     boolean Login(String uid, String upw);
 
-	
-	/*
-	//회원검색
-	public UserInfo Search(String uid);
-	
-	//회원정보 목록
-	public List<UserInfo> UserInfoList();
-	*/
 }

@@ -22,8 +22,7 @@ public class HomeMethod implements HomeInterface {
     private List<BasketInfo> bList;
     private List<OrderInfo> oList;
     private List<OrderDetail> odList;
-
-
+    
     private HashMap<String, UserInfo> uMap;
     private HashMap<String, ProductInfo> pMap;
     private HashMap<String, BasketInfo> bMap;
@@ -277,7 +276,7 @@ public class HomeMethod implements HomeInterface {
         UserInfo ui = uList.get(index);
         ui.setuCount(ui.getuCount() + 1);
 
-        if(ui.getuCount()>3) { //5회이상 주문시
+        if(ui.getuCount()>3) { //3회이상 주문시
             ui.setuGrade("level_2");
         }
         //리스트,맵 업로드
@@ -297,6 +296,30 @@ public class HomeMethod implements HomeInterface {
     public void OrderList() {
         System.out.println("\n=============== 주문 내역 ===============\n");
 
+
+
+    }
+
+    @Override //5-1 회원정보 수정&삭제
+    public void UserModifyDelete(UserInfo userInfo, String check) {
+
+        if(check.equals("M")) {
+            System.out.println("*******************회원정보수정에 들어옴");
+            int index = uList.indexOf(uMap.get(userInfo.getuId()));
+            uList.set(index,userInfo);
+            uMap.put(userInfo.getuId(),userInfo);
+        }
+        else {
+            System.out.println("*******************회원탈퇴에 들어옴");
+            uList.remove(uMap.get(userInfo.getuId()));
+            pMap.remove(userInfo.getuId());
+            System.out.println("회원탈퇴성공");
+        }
+
+        Collections.sort(uList);//회원번로를 기준으로 오름차순 정렬
+        
+        Interface inter = new Method();
+        inter.UserUpload(uList,data.getUserfilename()); //파일에 최종적으로 업로드
 
 
     }

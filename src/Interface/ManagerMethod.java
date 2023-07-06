@@ -75,7 +75,7 @@ public class ManagerMethod implements  ManagerInterface {
     }
 
     @Override //4. 상품수정 및 삭제
-    public void ProductModifyDelete(ProductInfo productinfo, String check) {
+    public void MenuModifyDelete(ProductInfo productinfo, String check) {
 
         String pname = productinfo.getpName();
 

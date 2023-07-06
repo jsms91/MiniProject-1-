@@ -17,5 +17,5 @@ public interface ManagerInterface {
     public void ProductList(ProductInfo productinfo);
 
     //상품수정
-    public void ProductModifyDelete(ProductInfo productinfo, String check);
+    public void MenuModifyDelete(ProductInfo productinfo, String check);
 }

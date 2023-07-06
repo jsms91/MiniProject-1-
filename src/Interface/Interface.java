@@ -19,10 +19,4 @@ public interface Interface {
 	//3-2.파일수정(회원정보.상품정보) 파일에 재업로드
     public void MenuUpload(List<ProductInfo> plist, String fileName);
 
-
-	//수정
-	
-	//삭제
-
-
 }
