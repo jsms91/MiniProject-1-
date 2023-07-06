@@ -29,7 +29,7 @@ public class HomeMethod implements HomeInterface {
     private HashMap<Integer, OrderInfo> oMap;
     private HashMap<String, HashSet<Integer>> odMap;
 
-
+    private HashSet<Integer> set;
 
     Scanner sc = new Scanner(System.in);
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -242,7 +242,13 @@ public class HomeMethod implements HomeInterface {
 
             OrderDetail od = new OrderDetail(odNo,odName,odPrice,odAmount,oNo,odId);
             odList.add(od); //주문상세내역에 더하기
-            HashSet<Integer> set = odMap.get(odId); //한아이디가 주문한 주문번호만 입력(set으로 중목저장x)
+
+            if(odMap.get(odId) == null) {
+               set = new HashSet<Integer>();
+            }
+            else {
+                set = odMap.get(odId); //한아이디가 주문한 주문번호만 입력(set으로 중목저장x)
+            }
             set.add(oNo);
             odMap.put(odId,set);
 
