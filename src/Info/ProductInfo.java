@@ -1,6 +1,6 @@
 package Info;
 
-public class ProductInfo implements Comparable<ProductInfo> {
+public class ProductInfo {
     private int pNo; //상품번호
     private String pName; //상품명
     private String pCategory; //카테고리명
@@ -80,8 +80,4 @@ public class ProductInfo implements Comparable<ProductInfo> {
         this.pDescription = pDescription;
     }
 
-    @Override
-    public int compareTo(ProductInfo other) {
-        return Integer.compare(this.pCategoryNumber, other.getpCategoryNumber());
-    }
 }

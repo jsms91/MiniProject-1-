@@ -3,7 +3,7 @@ package Info;//ok
 import Interface.*;
 import java.util.*;
 
-public class UserInfo implements Comparable<UserInfo> { //고객정보 필드가 저장
+public class UserInfo { //고객정보 필드가 저장
 	
 	private int uNo; //회원번호
 	private String uId; //아이디
@@ -82,12 +82,6 @@ public class UserInfo implements Comparable<UserInfo> { //고객정보 필드가
 
 	public void setuCategory(String uCategory) {
 		this.uCategory = uCategory;
-	}
-
-	//정렬할때 회원번호를 기준으로 정렬
-	@Override
-	public int compareTo(UserInfo other) {
-		return Integer.compare(this.uNo, other.getuNo());
 	}
 	
 }

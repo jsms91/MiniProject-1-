@@ -321,12 +321,9 @@ public class HomeMethod implements HomeInterface {
             pMap.remove(userInfo.getuId());
             System.out.println("회원탈퇴성공");
         }
-
-        Collections.sort(uList);//회원번로를 기준으로 오름차순 정렬
         
         Interface inter = new Method();
         inter.UserUpload(uList,data.getUserfilename()); //파일에 최종적으로 업로드
-
 
     }
 }

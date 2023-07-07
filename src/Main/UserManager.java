@@ -66,8 +66,6 @@ public class UserManager {
 
         userinterface = new UserMethod(data);
         
-        Collections.sort(ulist); //회원번호 순으로 오름차순 정렬
-        
         for(UserInfo userinfo1 : ulist) {
             userinterface.UserList(userinfo1);
         }
@@ -98,8 +96,6 @@ public class UserManager {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        // TODO: 2023-07-04 주문내역리스트 추가
-        //주문내역보는 메소드 추가
     }
 
 }

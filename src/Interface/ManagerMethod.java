@@ -98,8 +98,6 @@ public class ManagerMethod implements  ManagerInterface {
             System.out.println(pList.size() + ",,,,,, " + pMap.size());
         }
 
-        Collections.sort(pList);//카테고리 번로를 기준으로 오름차순 정렬
-
         Interface ifc = new Method();
 
         ifc.MenuUpload(pList,data.getProductfilename()); //List, Map에 최종적으로 수정한 정보 업로드후 파일에도 업로드

@@ -176,8 +176,6 @@ public class ProductManager {
     //상품 목록
     public void MenuListView() {
 
-        Collections.sort(pList); //상품을 카테고리 번호를 기준으로 오름차순 정렬
-
         System.out.println("\n=============== 상품 목록 ===============\n");
         System.out.printf("%-12s||%-12s||%-12s||%-12s||%-12s||%-50s%n",
                 "상품번호","상품명","카테고리","가격","재고량","상품설명\n");
