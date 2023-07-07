@@ -210,8 +210,6 @@ public class Home {
 	//4.회원정보 -> 회원정보[1.수정 | 2.탈퇴(탈퇴후 파일에서 삭제 -> 초기화면으로이동)
 	public void MyInfoList() {
 
-		System.out.println("로그인 아이디 ; " + LoginId);
-
 		int uNo = uMap.get(LoginId).getuNo();
 		String uName = uMap.get(LoginId).getuName();
 		int uCount = uMap.get(LoginId).getuCount();
@@ -244,10 +242,10 @@ public class Home {
 				System.out.println(String.format("%-10d | %-15s | %-10d | %s", ono, oTitle, oPrice, oDay));
 			}
 
-			System.out.println("\n[1.주문상세내역 | 2.회원정보수정 | 3.탈퇴 | 0. 뒤로가기");
-			System.out.print("* 원하는 메뉴를 선택하세요.[번호로 입력] >>> ");
-
 		}
+
+		System.out.println("\n[1.주문상세내역 | 2.회원정보수정 | 3.탈퇴 | 0. 뒤로가기");
+		System.out.print("* 원하는 메뉴를 선택하세요.[번호로 입력] >>> ");
 
 		int menu = sc.nextInt();
 

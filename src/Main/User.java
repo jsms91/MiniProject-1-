@@ -100,6 +100,10 @@ public class User {
 
 				userinterface = new UserMethod(data);
 				if(userinterface.Login(uid,upw)) {break;} //아이디 비민번호가 맞으면 true 반복문 종료
+				else {
+					System.out.println("종료는 'stop'입력");
+
+				}
 			}
 
 			System.out.println(">>>로그인 성공<<<\n");
