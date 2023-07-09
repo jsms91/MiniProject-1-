@@ -1,22 +1,19 @@
 package Info;//ok
 
-import Interface.*;
-import java.util.*;
-
 public class UserInfo { //고객정보 필드가 저장
-	
+
 	private int uNo; //회원번호
 	private String uId; //아이디
 	private String uPw; //비밀번호
 	private String uName; //이름
-	private int uCount; //구매횟수
-	private String uGrade; //회원등급
-	private String uCategory; //회원분류(Admin vs Member)
-
+	private int uCount = 0; //구매횟수(초기값 0으설정)
+	private String uGrade = "level_0"; //회원등급(초기값 level_0)
 	public UserInfo() {
 		super();
 	}
-	
+
+	private String uCategory; //회원분류(Admin vs Member)
+
 	public UserInfo(int uNo, String uId, String uPw, String uName, int uCount, String uGrade, String uCategory) {
 		super();
 		this.uNo = uNo;
@@ -83,5 +80,5 @@ public class UserInfo { //고객정보 필드가 저장
 	public void setuCategory(String uCategory) {
 		this.uCategory = uCategory;
 	}
-	
+
 }

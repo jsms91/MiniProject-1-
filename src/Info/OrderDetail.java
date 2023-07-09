@@ -3,10 +3,10 @@ package Info;
 public class OrderDetail {
     private int odNo; //주문상세번호
     private String odName;//주문한 상품명
-    private int odPrice; //각 상품의 가격
-    private int odAmount;//각 상품개수
+    private int odPrice; //상품 가격
+    private int odAmount;//상품 개수
     private int oNo;//주문번호(중복가능)
-    private String odId; //주문고객 아이디(이걸로 고객아이디로 주문한 주문번호 받아서 주문목록 띄우기)
+    private String odId; //주문고객 아이디(고객아이디로 주문번호 받아서 주문목록에서 해당아이디가 주문한내역 출력하는데 사용)
 
     public OrderDetail() {
         super();

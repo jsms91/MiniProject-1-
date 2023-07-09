@@ -11,6 +11,7 @@ public class BasketInfo {
     public BasketInfo() {
         super();
     }
+
     public BasketInfo(int bNo, String bName, int bAmount, int bPrice) {
         super();
         this.bNo = bNo;
@@ -35,11 +36,11 @@ public class BasketInfo {
         this.bName = bName;
     }
 
-    public int getaMount() {
+    public int getbAmount() {
         return bAmount;
     }
 
-    public void setaMount(int bAmount) {
+    public void setbAmount(int bAmount) {
         this.bAmount = bAmount;
     }
 
@@ -50,5 +51,4 @@ public class BasketInfo {
     public void setbPrice(int bPrice) {
         this.bPrice = bPrice;
     }
-
 }

@@ -1,44 +1,45 @@
 package Main;
 
-import java.util.*;
-import Info.*;
+import Info.Data;
 import Interface.*;
+
+import java.util.Scanner;
 
 public class Main{
 
 	public static Data Setup () {
-
+		
 		Data data = new Data();
+
 		Interface uinterface = new Method();
 		UserInterface userinterface = new UserMethod(data);
 		ManagerInterface managerinterface = new ManagerMethod(data);
 		HomeInterface homeinterface = new HomeMethod(data);
 
-		data.setUserfilename(uinterface.File("UserInfo.txt"));//회원정보 파일생성
-		data.setProductfilename(uinterface.File("ManagerInfo.txt")); //관리자 파일생성(나중에 상품파일로 이름 변경)
-		data.setOrderfilename(uinterface.File("OrderInfo.txt")); //주문내역 파일생성
-		data.setOrderdetailfilename(uinterface.File("OrderDetail.txt")); //주문상세내역 파일생성
+		//회원,상품,주문&상세내역 파일 생성
+		data.setUserfilename(uinterface.File(data.getUserfilename()));
+		data.setProductfilename(uinterface.File(data.getProductfilename()));
+		data.setOrderfilename(uinterface.File(data.getOrderfilename()));
+		data.setOrderdetailfilename(uinterface.File(data.getOrderdetailfilename()));
 
+		//파일에서 읽어온 정보를 list,map에 저장
 		userinterface.UserInfoReader(data.getUserfilename());
 		managerinterface.ProductInfoReader(data.getProductfilename());
 		homeinterface.OrderInfoReader(data.getOrderfilename());
 		homeinterface.OrderDetailReader(data.getOrderdetailfilename());
 
 		return data;
-		//일단 여기까지는 파일생성, 파일이름.
 	}
 	public static void main(String[] args) {
 
 		Data data = new Data();
-		data = Setup();//처음 시작전에 설정해두기
+		data = Setup();
 
 		User user = new User(data);
-		Manager manager = new Manager(data);
-		Home home = new Home(data);
+//		Manager manager = new Manager(data);
+//		Home home = new Home(data);
 
 		Scanner sc = new Scanner(System.in);
-
-		System.out.println("로그인아이디 체크 : " + data.LoginId);
 
 		System.out.println("\n=========================\n");
 		System.out.println("1. 회원 가입\n");
@@ -47,17 +48,14 @@ public class Main{
 		System.out.print("* 원하는 메뉴를 선택하세요. >>> ");
 
 		int number = sc.nextInt();
-		//프로젝트 시작
 		switch (number) {
 
 			case 1: //회원가입으로 이동
-				System.out.println("[회원가입]\n");
 				user.SignUp();
 				user.SignIn();
 				break;
 
 			case 2: //로그인으로 이동
-				System.out.println("[로그인]");
 				user.SignIn();
 				break;
 

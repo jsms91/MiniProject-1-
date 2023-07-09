@@ -1,6 +1,8 @@
 package Interface;
 
-import Info.*;
+import Info.BasketInfo;
+import Info.ProductInfo;
+import Info.UserInfo;
 import java.util.*;
 
 public interface HomeInterface {
@@ -21,10 +23,7 @@ public interface HomeInterface {
     //3~4 주문(장바구니)
     public void Order(int ono);
 
-    //5. 회원정보(주문내역 & 상세내역)
-    public void OrderList();
-
-    //5-1 회원정보 수정
+    //5 회원정보 수정
     public void UserModifyDelete(UserInfo userInfo, String check); //수정한 회원정보와 check(수정,삭제 선택)
 
 }

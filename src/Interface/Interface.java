@@ -1,13 +1,11 @@
 package Interface;
 
-import Info.ProductInfo;
-import Info.UserInfo;
-
+import Info.*;
 import java.util.*;
 
 public interface Interface {
 	
-	//1.파일생성(회원정보, 상품정보, 주문내역)
+	//1.파일생성(회원정보, 상품정보, 주문내역&상세내역)
     public String File(String fileName);
 	
 	//2.입력(회원가입, 상품등록) 파일에 저장

@@ -1,6 +1,6 @@
 package Info;
 
-public class ProductInfo {
+public class ProductInfo  implements Comparable<ProductInfo> {
     private int pNo; //상품번호
     private String pName; //상품명
     private String pCategory; //카테고리명
@@ -78,6 +78,11 @@ public class ProductInfo {
 
     public void setpDescription(String pDescription) {
         this.pDescription = pDescription;
+    }
+
+    @Override//메뉴 카테고리기준으로 오름차순정렬(메뉴 목록 출력시 카테고리별로 정렬)
+    public int compareTo(ProductInfo other) {
+        return Integer.compare(this.pCategoryNumber, other.getpCategoryNumber());
     }
 
 }

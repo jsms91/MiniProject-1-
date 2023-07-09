@@ -7,8 +7,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Method implements Interface {
 
@@ -20,13 +19,13 @@ public class Method implements Interface {
 		// 디렉터리 생성
 	    if (!dir.exists()) { // 해당 디렉터리가 존재하지 않으면
 	        if (dir.mkdirs()) { // 디렉터리 생성 시도
-	            System.out.println("디렉터리 생성 성공!!!");
+//	            System.out.println("디렉터리 생성 성공!!!");
 	        } else {
-	            System.out.println("디렉터리를 생성할 수 없습니다.");
+//	            System.out.println("디렉터리를 생성할 수 없습니다.");
 	            System.exit(0); // 프로그램 종료
 	        }
 	    } else {
-	        System.out.println("디렉터리가 이미 존재합니다.");
+//	        System.out.println("디렉터리가 이미 존재합니다.");
 	    }
 
 	    File file = new File(dir, fileName); // 파일 객체 생성
@@ -34,39 +33,33 @@ public class Method implements Interface {
 	    // 파일 생성
 	    try {
 	        if (file.createNewFile()) {
-	            System.out.println(fileName+"파일이 생성되었습니다.");
+//	            System.out.println(fileName+"파일이 생성되었습니다.");
 	        } else {
-	            System.out.println("파일을 생성할 수 없습니다.");
+//	            System.out.println("파일을 생성할 수 없습니다.");
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 
-	    return file.getPath();
+	    return file.getPath(); //파일이름을 리턴
 
 	}
 
-	//2. 회원가입, 상품등록, 주문(주문내역, 상세내역 각 각 업로드)
-	@Override //해당 파일의 정보를 저장(회원파일-회원정보, 상품파일-상품정보, 주문내역파일-주문내역, 주문상세파일-주문상세내역)
+	@Override //2. 회원가입, 상품등록, 주문내역&상세내역 -> 파일의 저장
 	public void Insert(String Info, String fileName) {
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {	 
 			
-			 // 입력받은 고객정보를 파일에 쓰기		    
+			 // 입력받은 문자열 정보를 파일에 저장(한줄)
 			 writer.write(Info);		    
-			 writer.newLine(); // 새로운 줄로 이동
+			 writer.newLine(); // 다음줄로 이동
 		    
-			 System.out.println("\n"+fileName+" 파일에 저장되었습니다.\n");
-			 
-		    
-		} catch (IOException e) {		  
-			System.out.println("파일에 고객정보를 저장하는 중에 오류가 발생했습니다.");		        
+		} catch (IOException e) {
 			e.printStackTrace();		    
 		}
 		
 	}
 
-	// TODO: 2023-07-05 수정해야됨(일단 다 코드만들었는데 실행확인)
 	@Override //3-1 회원정보 수정 후 파일에 업로드
 	public void UserUpload(List<UserInfo> ulist, String fileName) {
 
@@ -88,11 +81,7 @@ public class Method implements Interface {
 				writer.write(info);
 				writer.newLine(); // 새로운 줄로 이동
 			}
-
-			System.out.println("\n"+fileName+" 파일에 저장되었습니다.\n");
-
 		} catch (IOException e) {
-			System.out.println("파일에 고객정보를 저장하는 중에 오류가 발생했습니다.");
 			e.printStackTrace();
 		}
 
@@ -119,11 +108,7 @@ public class Method implements Interface {
 				writer.write(info);
 				writer.newLine(); // 새로운 줄로 이동
 			}
-
-			System.out.println("\n"+fileName+" 파일에 저장되었습니다.\n");
-
 		} catch (IOException e) {
-			System.out.println("파일에 고객정보를 저장하는 중에 오류가 발생했습니다.");
 			e.printStackTrace();
 		}
 

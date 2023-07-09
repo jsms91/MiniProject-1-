@@ -3,12 +3,11 @@ package Interface;
 import Info.*;
 import Main.Home;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 public class HomeMethod implements HomeInterface {
 
     LocalDate currentDate = LocalDate.now();//현재 날짜 받아오기
@@ -17,36 +16,13 @@ public class HomeMethod implements HomeInterface {
 
     private  Data data;
 
-    private List<UserInfo> uList;
-    private List<ProductInfo> pList;
-    private List<BasketInfo> bList;
-    private List<OrderInfo> oList;
-    private List<OrderDetail> odList;
-    
-    private HashMap<String, UserInfo> uMap;
-    private HashMap<String, ProductInfo> pMap;
-    private HashMap<String, BasketInfo> bMap;
-    private HashMap<Integer, OrderInfo> oMap;
-    private HashMap<String, HashSet<Integer>> odMap;
-
     private HashSet<Integer> set;
 
     Scanner sc = new Scanner(System.in);
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-
     public HomeMethod(Data data) {
         this.data = data;
-        this.uList = data.getUlist();
-        this.pList = data.getPlist();
-        this.bList = data.getBlist();
-        this.oList = data.getOlist();
-        this.odList = data.getOdlist();
-        this.uMap = data.getUmap();
-        this.pMap = data.getPmap();
-        this.bMap = data.getBmap();
-        this.oMap = data.getOmap();
-        this.odMap = data.getOdmap();
     }
 
     @Override //0. 주문내역 파일정보 읽어오기
@@ -57,20 +33,20 @@ public class HomeMethod implements HomeInterface {
             String line; //파일에서 한줄씩 고객정로를 한문자열로 가져온다.
 
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(","); // ","를 기준으로 고객정보의 각 값을 배열에 저장
+                String[] orderData = line.split(","); // ","를 기준으로 고객정보의 각 값을 배열에 저장
 
                 // 주문 정보의 각 값들을 적절한 데이터 타입으로 변환하여 변수에 저장
-                int oNo = Integer.parseInt(data[0]);
-                String oId = data[1];
-                String oTitle = data[2];
-                int oPrice = Integer.parseInt(data[3]);
-                String oDay = data[4];
+                int oNo = Integer.parseInt(orderData[0]);
+                String oId = orderData[1];
+                String oTitle = orderData[2];
+                int oPrice = Integer.parseInt(orderData[3]);
+                String oDay = orderData[4];
 
                 // UserInfo 객체를 생성하고 고객 정보 값들을 사용하여 초기화
                 OrderInfo oi = new OrderInfo(oNo, oId, oTitle, oPrice, oDay);
 
-                oList.add(oi);
-                oMap.put(oNo,oi);
+                data.getOlist().add(oi);
+                data.getOmap().put(oNo,oi);
 
             }
 
@@ -79,10 +55,8 @@ public class HomeMethod implements HomeInterface {
             e.printStackTrace();
         }
 
-        System.out.println("\n>>> 파일이름 : " + data.getOrderfilename() + "<<<\n");
-
-        data.setOlist(oList); //파일에서 담아온 모든정보를 저장한 리스트를 저장
-        data.setOmap(oMap); //파일에서 담아온 모든정보를 저장한 맵을 저장
+        data.setOlist(data.getOlist()); //파일에서 담아온 모든정보를 저장한 리스트를 저장
+        data.setOmap(data.getOmap()); //파일에서 담아온 모든정보를 저장한 맵을 저장
 
     }
 
@@ -94,29 +68,31 @@ public class HomeMethod implements HomeInterface {
             String line; //파일에서 한줄씩 고객정로를 한문자열로 가져온다.
 
             while ((line = reader.readLine()) != null) {
-                String[] data = line.split(","); // ","를 기준으로 고객정보의 각 값을 배열에 저장
+                String[] orderdetailData = line.split(","); // ","를 기준으로 고객정보의 각 값을 배열에 저장
 
                 // 주문상세 정보의 각 값들을 적절한 데이터 타입으로 변환하여 변수에 저장
-                int odNo = Integer.parseInt(data[0]);
-                String odName = data[1];
-                int odPrice = Integer.parseInt(data[2]);
-                int odAmount = Integer.parseInt(data[3]);
-                int oNo = Integer.parseInt(data[4]);
-                String odId = data[5]; //주문한 고객아이디
+                int odNo = Integer.parseInt(orderdetailData[0]);
+                String odName = orderdetailData[1];
+                int odPrice = Integer.parseInt(orderdetailData[2]);
+                int odAmount = Integer.parseInt(orderdetailData[3]);
+                int oNo = Integer.parseInt(orderdetailData[4]);
+                String odId = orderdetailData[5]; //주문한 고객아이디
 
                 // UserInfo 객체를 생성하고 고객 정보 값들을 사용하여 초기화
                 OrderDetail od = new OrderDetail(odNo, odName, odPrice, odAmount, oNo,odId);
-                HashSet<Integer> set = new HashSet<Integer>();
-                if(odMap.containsKey(odId)) { //같은아이디 주문번호를 담기
-                    set = odMap.get(od.getOdId());
+                
+                set = new HashSet<Integer>();
+                
+                if(data.getOdmap().containsKey(odId)) { //같은아이디 주문번호를 담기
+                    set = data.getOdmap().get(od.getOdId());
                     set.add(oNo); //같은 아이디에 주문번호 중복저장x
                 }
                 else {
                     set.add(oNo);
                 }
 
-                odList.add(od);
-                odMap.put(odId,set);
+                data.getOdlist().add(od);
+                data.getOdmap().put(odId,set);
 
             }
 
@@ -125,10 +101,8 @@ public class HomeMethod implements HomeInterface {
             e.printStackTrace();
         }
 
-        System.out.println("\n>>> 파일이름 : " + data.getOrderdetailfilename() + "<<<\n");
-
-        data.setOdlist(odList); //파일에서 담아온 모든정보를 해당 리스트에 저장
-        data.setOdmap(odMap); //파일에서 담아온 모든정보를 해당 맵애 저장
+        data.setOdlist(data.getOdlist()); //파일에서 담아온 모든정보를 해당 리스트에 저장
+        data.setOdmap(data.getOdmap()); //파일에서 담아온 모든정보를 해당 맵애 저장
     }
 
     @Override //1.상품목록리스트
@@ -178,30 +152,32 @@ public class HomeMethod implements HomeInterface {
     @Override //1-2다른메뉴 더보기
     public void showOtherMenu() {
 
-        System.out.println("\n1.다른메뉴 더보기 || 2.상품담기 || 0.뒤로가기 ");
-        System.out.print("* 입력 >>> ");
-        int menu = sc.nextInt();
-
         Home home = new Home(data);
 
-        if(menu==1) {
-            try {
+        try {
+            System.out.println("\n1.다른메뉴 더보기 || 2.상품담기 || 0.뒤로가기 ");
+            System.out.print("* 입력 >>> ");
+            int menu = Integer.parseInt(br.readLine());
+
+            if(menu==1) {
+
                 System.out.print("\n[ all || coffee || ade || dessert || etc] >>> ");
                 String categoryName = br.readLine();
 
                 if (categoryName.equals("all") || categoryName.equals("coffee") || categoryName.equals("ade") ||
                         categoryName.equals("dessert") || categoryName.equals("etc")) {
-                    MenuList(pList, categoryName);
+                    MenuList(data.getPlist(), categoryName);
                 } else {
                     System.out.println(("[Error!!]"));
                     home.HomeMenuListView();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            else if(menu==0) { home.HomeView();}
+        } catch (Exception e) {
+            System.out.println("[Error!!]");
+            home.HomeMenuListView();
+            e.printStackTrace();
         }
-        else if(menu==0) { home.HomeView();}
-
     }
 
     //1-3 상품담기
@@ -211,13 +187,13 @@ public class HomeMethod implements HomeInterface {
         String bpName = basketInfo.getbName();
 
         if(check==1) { //장바구니에 같은 상품 존재(변경만 해주면됨)
-            int index = bList.indexOf(bMap.get(bpName));
-            bList.set(index,basketInfo);
-            bMap.put(bpName,basketInfo);
+            int index = data.getBlist().indexOf(data.getBmap().get(bpName));
+            data.getBlist().set(index,basketInfo);
+            data.getBmap().put(bpName,basketInfo);
         }
         else { //새로운 상품을 저장(새로 추가)
-            bList.add(basketInfo);//장바구니리스트 추가
-            bMap.put(bpName,basketInfo); //장바구니맵 추가
+            data.getBlist().add(basketInfo);//장바구니리스트 추가
+            data.getBmap().put(bpName,basketInfo); //장바구니맵 추가
         }
 
     }
@@ -225,105 +201,95 @@ public class HomeMethod implements HomeInterface {
     @Override //2.주문
     public void Order(int ono) {
 
-        System.out.println("주문들어옴[장바구니 담긴 개수는?]" + bList.size());
         int oPrice = 0;
         Interface inter = new Method();
         String odId = data.getLoginId();
 
         //장바구니에서 상세내역먼저 저장
-        for(BasketInfo bi : bList) {
-            int odNo = odList.size() == 0 ? 1 : (odList.get(odList.size()-1).getOdNo())+1;
+        for (BasketInfo bi : data.getBlist()) {
+            int odNo = data.getOdlist().size() == 0 ? 1 : (data.getOdlist().get(data.getOdlist().size() - 1).getOdNo()) + 1;
             String odName = bi.getbName();
             int odPrice = bi.getbPrice();
-            int odAmount = bi.getaMount();
+            int odAmount = bi.getbAmount();
             int oNo = ono;
 
             oPrice += odPrice; //총 주문금액
 
-            OrderDetail od = new OrderDetail(odNo,odName,odPrice,odAmount,oNo,odId);
-            odList.add(od); //주문상세내역에 더하기
+            OrderDetail od = new OrderDetail(odNo, odName, odPrice, odAmount, oNo, odId);
 
-            if(odMap.get(odId) == null) {
-               set = new HashSet<Integer>();
-            }
-            else {
-                set = odMap.get(odId); //한아이디가 주문한 주문번호만 입력(set으로 중목저장x)
+            data.getOdlist().add(od); //주문상세내역에 더하기
+
+            if (data.getOdmap().get(odId) == null) {
+                set = new HashSet<Integer>();
+            } else {
+                set = data.getOdmap().get(odId); //한아이디가 주문한 주문번호만 입력(set으로 중목저장x)
             }
             set.add(oNo);
-            odMap.put(odId,set);
+            data.getOdmap().put(odId, set);
 
             //재고조정
-            int index = pList.indexOf(pMap.get(odName)); //해당상품의 객체정보가 저장된 index번호
-            ProductInfo pi = pList.get(index); //일단 기존의 정보를  pi에 저장
-            pi.setpStack(pi.getpStack()-odAmount); //기존재고 - 주문한 상품재고
-            
-            pList.set(index,pi); //수정한 정보를 저장(기존거는 없어짐)
-            pMap.put(odName,pi); //덮어씌우기
+            int index = data.getPlist().indexOf(data.getPmap().get(odName)); //해당상품의 객체정보가 저장된 index번호
+            ProductInfo pi = data.getPlist().get(index); //일단 기존의 정보를  pi에 저장
+            pi.setpStack(pi.getpStack() - odAmount); //기존재고 - 주문한 상품재고
 
-            String info = String.format("%d,%s,%d,%d,%d,%s",odNo,odName,odPrice,odAmount,oNo,odId);
+            data.getPlist().set(index, pi); //수정한 정보를 저장(기존거는 없어짐)
+            data.getPmap().put(odName, pi); //덮어씌우기
+
+            String info = String.format("%d,%s,%d,%d,%d,%s", odNo, odName, odPrice, odAmount, oNo, odId);
             inter.Insert(info, data.getOrderdetailfilename());//주문상세내역파일에 저장
         }
 
         //최종 재고가 조정된 수정값을 파일에 새로 업로드
-        inter.MenuUpload(pList,data.getProductfilename());
+        inter.MenuUpload(data.getPlist(), data.getProductfilename());
 
         //주문내역에 저장
         int oNo = ono; //주문번호
-        String oTitle =  bList.size()>1 ? String.format("%s외 %d개",bList.get(0).getbName(),(bList.size()-1)) : bList.get(0).getbName();
+        String oTitle = data.getBlist().size() > 1 ? String.format("%s외 %d개", data.getBlist().get(0).getbName(), (data.getBlist().size() - 1)) : data.getBlist().get(0).getbName();
         String oDay = formattedDate; //Today
 
-        String info = String.format("%d,%s,%s,%d,%s",oNo,odId,oTitle,oPrice,oDay);
-        inter.Insert(info,data.getOrderfilename()); //주문내역 파일에 저장
+        String info = String.format("%d,%s,%s,%d,%s", oNo, odId, oTitle, oPrice, oDay);
+        inter.Insert(info, data.getOrderfilename()); //주문내역 파일에 저장
+        OrderInfo oderinfo = new OrderInfo(oNo, odId, oTitle, oPrice, oDay);
 
+        data.getOlist().add(oderinfo);//주문내역 리스트에 새로운 주문정보 추가
+        data.getOmap().put(oNo,oderinfo);
 
 
         //구매회수 1증가 회원정보 변경
-        int index = uList.indexOf(uMap.get(odId));
-        UserInfo ui = uList.get(index);
+        int index = data.getUlist().indexOf(data.getUmap().get(odId));
+        UserInfo ui = data.getUlist().get(index);
         ui.setuCount(ui.getuCount() + 1);
 
-        if(ui.getuCount()>3) { //3회이상 주문시
+        if (ui.getuCount() >= 3) { //3회이상 주문시
             ui.setuGrade("level_2");
         }
         //리스트,맵 업로드
-        uList.set(index,ui);
-        uMap.put(odId,ui);
-        inter.UserUpload(uList,data.getUserfilename());//파일에 수정된 회원정보 새로 업로드
+        data.getUlist().set(index, ui);
+        data.getUmap().put(odId, ui);
+        inter.UserUpload(data.getUlist(), data.getUserfilename());//파일에 수정된 회원정보 새로 업로드
 
-        System.out.println("주문완료.");
-        System.out.println("장바구니 크기 : " + bList.size() + " ,, " + bMap.size());
-        bMap.clear();
-        bList.clear();
-        System.out.println("초기화한 장바구니 크기" + bList.size() + " ,, " + bMap.size());
-
-    }
-
-    @Override //5. 회원정보(주문내역&상세내역)
-    public void OrderList() {
-        System.out.println("\n=============== 주문 내역 ===============\n");
-
-
-
+        //장바구니 초기화
+        data.getBmap().clear();
+        data.getBlist().clear();
     }
 
     @Override //5-1 회원정보 수정&삭제
     public void UserModifyDelete(UserInfo userInfo, String check) {
 
-        if(check.equals("M")) {
-            System.out.println("*******************회원정보수정에 들어옴");
-            int index = uList.indexOf(uMap.get(userInfo.getuId()));
-            uList.set(index,userInfo);
-            uMap.put(userInfo.getuId(),userInfo);
+        if(check.equals("M")) { //수정일 경우
+            int index = data.getUlist().indexOf(data.getUmap().get(userInfo.getuId())); //해당 객체가 저장된 index값 찾기
+            //리스트,맵에 새로운 객쳊어보 저장(set을 통해 해당자리에 수정)
+            data.getUlist().set(index,userInfo);
+            data.getUmap().put(userInfo.getuId(),userInfo);
         }
-        else {
-            System.out.println("*******************회원탈퇴에 들어옴");
-            uList.remove(uMap.get(userInfo.getuId()));
-            pMap.remove(userInfo.getuId());
-            System.out.println("회원탈퇴성공");
+        else { //탈퇴일 경우
+            //회원리스트,맵에서 해당객체정보 삭제
+            data.getUlist().remove(data.getUmap().get(userInfo.getuId()));
+            data.getPmap().remove(userInfo.getuId());
         }
         
         Interface inter = new Method();
-        inter.UserUpload(uList,data.getUserfilename()); //파일에 최종적으로 업로드
+        inter.UserUpload(data.getUlist(),data.getUserfilename()); //파일에 최종적으로 업로드
 
     }
 }

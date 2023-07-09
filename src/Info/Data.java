@@ -3,24 +3,23 @@ package Info;
 import java.util.*;
 
 public class Data {
+    private String userfilename = "UserInfo.txt"; //회원정보파일이름
+    private String productfilename = "ManagerInfo.txt"; //상품정보 파일이름
+    private String orderfilename = "OrderInfo.txt"; //주문내역 파일이름
+    private String orderdetailfilename = "OrderDetail.txt"; //주문상세내역 파일이름
+    private List<UserInfo> ulist = new ArrayList<>(); //회원정보리스트
+    private List<ProductInfo> plist = new ArrayList<>(); //상품목록 리스트
+    private List<BasketInfo> blist = new ArrayList<>(); //장바구니 리스트
+    private List<OrderInfo> olist = new ArrayList<>(); //주문내역 리스트
+    private List<OrderDetail> odlist = new ArrayList<>(); //주문상세내역 리스트
 
-    public String userfilename; //회원정보파일이름
-    public String productfilename; //상품정보 파일이름
-    public String orderfilename; //주문내역 파일이름
-    public String orderdetailfilename; //주문상세내역 파일이름
-    public List<UserInfo> ulist = new ArrayList<>(); //회원정보리스트
-    public List<ProductInfo> plist = new ArrayList<>(); //상품목록 리스트
-    public List<BasketInfo> blist = new ArrayList<>(); //장바구니 리스트
-    public List<OrderInfo> olist = new ArrayList<>(); //주문내역 리스트
-    public List<OrderDetail> odlist = new ArrayList<>(); //주문상세내역 리스트
+    private HashMap<String,UserInfo> umap = new HashMap<String,UserInfo>(); //회원정보맵
+    private HashMap<String,ProductInfo> pmap = new HashMap<String,ProductInfo>();//상품정보맵
+    private HashMap<String,BasketInfo> bmap = new HashMap<String, BasketInfo>();//장바구니맵
+    private HashMap<Integer,OrderInfo> omap = new HashMap<Integer,OrderInfo>(); //주문내역맵
+    private HashMap<String,HashSet<Integer>> odmap = new HashMap<String,HashSet<Integer>>(); //주문상세내역맵
 
-    public HashMap<String,UserInfo> umap = new HashMap<String,UserInfo>(); //회원정보맵
-    public HashMap<String,ProductInfo> pmap = new HashMap<String,ProductInfo>();//상품정보맵
-    public HashMap<String,BasketInfo> bmap = new HashMap<String, BasketInfo>();//장바구니맵
-    public HashMap<Integer,OrderInfo> omap = new HashMap<Integer,OrderInfo>(); //주문내역맵
-    public HashMap<String,HashSet<Integer>> odmap = new HashMap<String,HashSet<Integer>>(); //주문상세내역맵
-
-    public String LoginId; //로그인 중인 아이디
+    private String LoginId; //로그인 중인 아이디
 
     public Data() {
         super();
@@ -45,7 +44,7 @@ public class Data {
         this.bmap = bmap;
         this.omap = omap;
         this.odmap = odmap;
-        LoginId = loginId;
+        this.LoginId = loginId;
     }
 
     public String getUserfilename() {
@@ -140,9 +139,7 @@ public class Data {
         return bmap;
     }
 
-    public void setBmap(HashMap<String, BasketInfo> bmap) {
-        this.bmap = bmap;
-    }
+    public void setBmap(HashMap<String, BasketInfo> bmap) { this.bmap = bmap; }
 
     public HashMap<Integer, OrderInfo> getOmap() {
         return omap;
@@ -167,4 +164,5 @@ public class Data {
     public void setLoginId(String loginId) {
         LoginId = loginId;
     }
+
 }
